@@ -209,6 +209,21 @@
     #bridge-frame.empty {
       display: none;
     }
+
+    /* Titles for new panels */
+    .pcm-panel-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #e5e7eb;
+    }
+
+    .pcm-panel-subtitle {
+      margin-top: 0.25rem;
+      font-size: 0.7rem;
+      color: rgba(148, 163, 184, 0.9);
+    }
   </style>
 </head>
 <body class="min-h-screen bg-slate-950 text-slate-100">
@@ -237,7 +252,7 @@
       </div>
 
       <div class="flex flex-col items-stretch md:items-end gap-3">
-        <!-- New buttons row -->
+        <!-- Header buttons -->
         <div class="flex flex-wrap gap-2 justify-start md:justify-end">
           <!-- TODO: replace # with real buy link -->
           <a
@@ -268,7 +283,7 @@
       </div>
     </header>
 
-    <!-- Main layout -->
+    <!-- Main layout: BRIDGE SECTION (mantida) -->
     <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,_2.1fr)_minmax(0,_3fr)] gap-6 lg:gap-8">
       <!-- Left column: filters and list -->
       <section class="space-y-4">
@@ -391,6 +406,271 @@
         </div>
       </section>
     </div>
+
+    <!-- NOVAS SEÇÕES ABAIXO DA ÁREA DE BRIDGE -->
+    <section class="mt-10 space-y-8">
+      <!-- Row 1: Network snapshot + Quick tools -->
+      <div class="grid gap-6 lg:grid-cols-2">
+        <!-- PulseChain network snapshot -->
+        <section class="pcm-panel bg-slate-950/85 border border-slate-700 px-4 py-4 md:px-5 md:py-5">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <h2 class="pcm-panel-title">PulseChain network snapshot</h2>
+              <p class="pcm-panel-subtitle">
+                High level numbers to sanity-check your bridge decisions.
+              </p>
+            </div>
+            <span class="rounded-none border border-sky-500/40 bg-sky-900/40 px-2 py-1 text-[10px] font-medium uppercase tracking-[0.18em] text-slate-300/90">
+              Live feed
+            </span>
+          </div>
+
+          <div class="mt-4 grid gap-4 md:grid-cols-3">
+            <div class="pcm-card border border-sky-500/60 bg-slate-900/80 shadow-[0_0_0_1px_rgba(15,23,42,0.9),0_0_30px_rgba(56,189,248,0.45)] px-3 py-3">
+              <p class="text-[11px] font-medium uppercase tracking-[0.16em] text-slate-400/90">
+                PLS price
+              </p>
+              <p id="pls-price-usd" class="mt-1 text-sm font-semibold text-sky-100">
+                Loading...
+              </p>
+              <p id="pls-price-eth" class="mt-0.5 text-[11px] text-slate-400/90">
+                -
+              </p>
+            </div>
+
+            <div class="pcm-card border border-emerald-500/60 bg-slate-900/80 shadow-[0_0_0_1px_rgba(15,23,42,0.9),0_0_30px_rgba(16,185,129,0.4)] px-3 py-3">
+              <p class="text-[11px] font-medium uppercase tracking-[0.16em] text-slate-400/90">
+                24h change
+              </p>
+              <p id="pls-change" class="mt-1 text-sm font-semibold">
+                -
+              </p>
+              <p id="pls-change-label" class="mt-0.5 text-[11px] text-slate-400/90">
+                vs USD
+              </p>
+            </div>
+
+            <div class="pcm-card border border-purple-500/60 bg-slate-900/80 shadow-[0_0_0_1px_rgba(15,23,42,0.9),0_0_30px_rgba(168,85,247,0.45)] px-3 py-3">
+              <p class="text-[11px] font-medium uppercase tracking-[0.16em] text-slate-400/90">
+                Last refresh
+              </p>
+              <p id="pls-last-updated" class="mt-1 text-xs text-slate-200/90">
+                Not loaded yet
+              </p>
+              <p class="mt-0.5 text-[11px] text-slate-400/90">
+                Auto-updates every 60 seconds
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Quick tools for PulseChain -->
+        <section class="pcm-panel bg-slate-950/85 border border-slate-700 px-4 py-4 md:px-5 md:py-5">
+          <h2 class="pcm-panel-title">Essential PulseChain tools</h2>
+          <p class="pcm-panel-subtitle">
+            Everything you usually keep in bookmarks, in one place.
+          </p>
+
+          <div class="mt-4 grid gap-3 md:grid-cols-2">
+            <a
+              href="https://pulsechain.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="pcm-card group border border-sky-500/50 bg-slate-950/70 shadow-[0_0_0_1px_rgba(15,23,42,0.95)] hover:border-sky-400 hover:bg-slate-900/90 px-3 py-3"
+            >
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-[0.16em] text-sky-300/90">
+                    PulseChain.com
+                  </p>
+                  <p class="mt-1 text-[11px] text-slate-300/90">
+                    Official chain homepage and docs.
+                  </p>
+                </div>
+                <span class="text-[10px] font-mono text-sky-300/80">
+                  CORE
+                </span>
+              </div>
+            </a>
+
+            <a
+              href="https://app.pulsex.com/swap"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="pcm-card group border border-emerald-500/50 bg-slate-950/70 shadow-[0_0_0_1px_rgba(15,23,42,0.95)] hover:border-emerald-400 hover:bg-slate-900/90 px-3 py-3"
+            >
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-[0.16em] text-emerald-300/90">
+                    PulseX swap
+                  </p>
+                  <p class="mt-1 text-[11px] text-slate-300/90">
+                    Native DEX for PLS and PRC-20 pairs.
+                  </p>
+                </div>
+                <span class="text-[10px] font-mono text-emerald-300/80">
+                  DEX
+                </span>
+              </div>
+            </a>
+
+            <a
+              href="https://dexscreener.com/pulsechain"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="pcm-card group border border-fuchsia-500/50 bg-slate-950/70 shadow-[0_0_0_1px_rgba(15,23,42,0.95)] hover:border-fuchsia-400 hover:bg-slate-900/90 px-3 py-3"
+            >
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-[0.16em] text-fuchsia-300/90">
+                    DexScreener
+                  </p>
+                  <p class="mt-1 text-[11px] text-slate-300/90">
+                    Live charts for PulseChain pairs.
+                  </p>
+                </div>
+                <span class="text-[10px] font-mono text-fuchsia-300/80">
+                  ANALYTICS
+                </span>
+              </div>
+            </a>
+
+            <a
+              href="https://beacon.pulsechain.com/gasnow"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="pcm-card group border border-amber-500/50 bg-slate-950/70 shadow-[0_0_0_1px_rgba(15,23,42,0.95)] hover:border-amber-400 hover:bg-slate-900/90 px-3 py-3"
+            >
+              <div class="flex items-center justify-between gap-3">
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-[0.16em] text-amber-300/90">
+                    Gas dashboard
+                  </p>
+                  <p class="mt-1 text-[11px] text-slate-300/90">
+                    Check beats before sending big moves.
+                  </p>
+                </div>
+                <span class="text-[10px] font-mono text-amber-300/80">
+                  GAS
+                </span>
+              </div>
+            </a>
+          </div>
+        </section>
+      </div>
+
+      <!-- Row 2: About MEOWL + Security checklist -->
+      <div class="grid gap-6 lg:grid-cols-[minmax(0,_1.4fr)_minmax(0,_1.6fr)]">
+        <!-- About $MEOWL utility -->
+        <section class="pcm-panel bg-slate-950/85 border border-slate-700 px-4 py-4 md:px-5 md:py-5">
+          <h2 class="pcm-panel-title">What is $MEOWL for</h2>
+          <p class="pcm-panel-subtitle">
+            Give users context before they even click buy.
+          </p>
+
+          <div class="mt-4 space-y-3">
+            <div class="pcm-card border border-sky-500/60 bg-slate-950/80 shadow-[0_0_0_1px_rgba(15,23,42,0.95)] px-3 py-3">
+              <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-300/90">
+                Core vision
+              </p>
+              <p class="mt-1.5 text-[13px] leading-relaxed text-slate-200/90">
+                PussyChain Meowl is a neutral hub that makes bridging into PulseChain
+                easier, safer and more transparent for newcomers. The token
+                supports tools and infrastructure around multi-chain access to Pulse.
+              </p>
+            </div>
+
+            <div class="grid gap-3 md:grid-cols-2">
+              <div class="pcm-card border border-emerald-500/60 bg-slate-950/80 px-3 py-3">
+                <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-300/90">
+                  Utility ideas
+                </p>
+                <ul class="mt-2 space-y-1 text-[12px] text-slate-200/90">
+                  <li>Priority listing for new bridges and tools</li>
+                  <li>Access to advanced routing analytics</li>
+                  <li>Community governance for supported routes</li>
+                </ul>
+              </div>
+
+              <div class="pcm-card border border-fuchsia-500/60 bg-slate-950/80 px-3 py-3">
+                <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-fuchsia-300/90">
+                  Roadmap hooks
+                </p>
+                <ul class="mt-2 space-y-1 text-[12px] text-slate-200/90">
+                  <li>Bridge reputation scoring system</li>
+                  <li>Alert bot for stuck or delayed transfers</li>
+                  <li>Educational hub on bridging risks</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Security checklist -->
+        <section class="pcm-panel bg-slate-950/85 border border-slate-700 px-4 py-4 md:px-5 md:py-5">
+          <h2 class="pcm-panel-title">Bridge safety checklist</h2>
+          <p class="pcm-panel-subtitle">
+            Simple rules that save users from common mistakes.
+          </p>
+
+          <div class="mt-4 pcm-card border border-red-500/60 bg-slate-950/80 px-3 py-3">
+            <ul class="space-y-2 text-[12px] text-slate-100/90">
+              <li>
+                <span class="font-semibold text-red-300/90">1.</span>
+                Always verify you are on <span class="font-mono text-sky-300/90">pussychain.meowl</span>
+                and the official bridge URL before signing anything.
+              </li>
+              <li>
+                <span class="font-semibold text-red-300/90">2.</span>
+                Start with a <span class="font-semibold">small test amount</span> when
+                using a new route or bridge for the first time.
+              </li>
+              <li>
+                <span class="font-semibold text-red-300/90">3.</span>
+                Double check <span class="font-semibold">network</span>,
+                <span class="font-semibold">destination address</span> and
+                <span class="font-semibold">token</span> before confirming.
+              </li>
+              <li>
+                <span class="font-semibold text-red-300/90">4.</span>
+                Never paste or sign anything that came from DMs or random comments.
+                Official updates should be linked from this page only.
+              </li>
+              <li>
+                <span class="font-semibold text-red-300/90">5.</span>
+                After bridging, wait for confirmations and verify the balance on
+                the destination chain explorer before making new moves.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- Row 3: Markets widget -->
+      <section class="pcm-panel bg-slate-950/85 border border-slate-700 px-4 py-4 md:px-5 md:py-5">
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <h2 class="pcm-panel-title">PulseChain markets overview</h2>
+            <p class="pcm-panel-subtitle">
+              Live pairs overview so users can see liquidity and activity.
+            </p>
+          </div>
+          <span class="rounded-none border border-slate-700 bg-slate-900/70 px-2 py-1 text-[10px] font-mono uppercase tracking-[0.2em] text-slate-300/90">
+            DexScreener embed
+          </span>
+        </div>
+
+        <div class="mt-4 h-[420px] overflow-hidden rounded-none border border-slate-700/80 bg-slate-950/80 shadow-[0_0_0_1px_rgba(15,23,42,0.95),0_0_40px_rgba(56,189,248,0.35)]">
+          <iframe
+            src="https://dexscreener.com/pulsechain?embed=1&theme=dark"
+            title="PulseChain markets on DexScreener"
+            loading="lazy"
+            class="h-full w-full border-0"
+            referrerpolicy="no-referrer"
+          ></iframe>
+        </div>
+      </section>
+    </section>
 
     <!-- Footer -->
     <footer class="mt-8 text-[10px] text-slate-500 flex flex-col md:flex-row md:items-center md:justify-between gap-2 pb-4">
@@ -646,6 +926,57 @@
     });
 
     renderList();
+
+    // PulseChain price snapshot (Coingecko)
+    async function loadPulsechainStats() {
+      const priceUsdEl = document.getElementById("pls-price-usd");
+      const priceEthEl = document.getElementById("pls-price-eth");
+      const changeEl = document.getElementById("pls-change");
+      const lastUpdatedEl = document.getElementById("pls-last-updated");
+
+      if (!priceUsdEl || !priceEthEl || !changeEl || !lastUpdatedEl) return;
+
+      try {
+        const res = await fetch(
+          "https://api.coingecko.com/api/v3/simple/price?ids=pulsechain&vs_currencies=usd,eth&include_24hr_change=true"
+        );
+
+        if (!res.ok) return;
+
+        const data = await res.json();
+        const pls = data.pulsechain;
+        if (!pls) return;
+
+        const usd = pls.usd;
+        const eth = pls.eth;
+        const change = pls.usd_24h_change;
+
+        priceUsdEl.textContent = usd ? `$${usd.toFixed(6)}` : "-";
+        priceEthEl.textContent = eth ? `${eth.toFixed(8)} ETH` : "-";
+
+        if (typeof change === "number") {
+          const sign = change >= 0 ? "+" : "";
+          changeEl.textContent = `${sign}${change.toFixed(2)}%`;
+          changeEl.classList.remove("text-red-300", "text-emerald-300");
+          changeEl.classList.add(
+            change >= 0 ? "text-emerald-300" : "text-red-300"
+          );
+        } else {
+          changeEl.textContent = "-";
+        }
+
+        const now = new Date();
+        lastUpdatedEl.textContent = now.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit"
+        });
+      } catch (e) {
+        // silent fail
+      }
+    }
+
+    loadPulsechainStats();
+    setInterval(loadPulsechainStats, 60000);
   </script>
 </body>
 </html>
