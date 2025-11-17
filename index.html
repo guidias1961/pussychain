@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PussyChain Meowl - PulseChain Bridges Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/png" href="logo.png" />
+
+  <!-- Code-style font -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Tailwind via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+
+    body {
+      background: #020617;
+      color: #e5e7eb;
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular,
+        Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      letter-spacing: 0.01em;
+    }
+
+    /* Cyberpunk background with neon grid */
+    .cyber-bg {
+      background:
+        radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.15), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(236, 72, 153, 0.18), transparent 55%),
+        radial-gradient(circle at 0 100%, rgba(129, 140, 248, 0.18), transparent 55%),
+        linear-gradient(130deg, #020617 0, #020617 40%, #020617 100%);
+    }
+
+    .cyber-bg::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(148, 163, 184, 0.09) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.09) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.45;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    /* Cut-corner panels with slight bevel */
+    .pcm-panel {
+      position: relative;
+      border-radius: 0;
+      border-width: 1px;
+      border-style: solid;
+      border-color: #64748b #020617 #020617 #64748b;
+      background:
+        linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.92));
+      clip-path: polygon(
+        10px 0,
+        100% 0,
+        100% calc(100% - 10px),
+        calc(100% - 10px) 100%,
+        0 100%,
+        0 10px
+      );
+      box-shadow:
+        0 0 0 1px rgba(15, 23, 42, 0.9),
+        0 14px 40px rgba(0, 0, 0, 0.9),
+        inset 0 0 0 1px rgba(148, 163, 184, 0.04);
+      overflow: hidden;
+    }
+
+    .pcm-panel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(236, 72, 153, 0.16),
+          transparent 35%,
+          transparent 65%,
+          rgba(56, 189, 248, 0.18)
+        );
+      mix-blend-mode: soft-light;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    /* Cards inside lists */
+    .pcm-card {
+      position: relative;
+      border-radius: 0;
+      border-width: 1px;
+      border-style: solid;
+      border-color: #475569 #020617 #020617 #475569;
+      background:
+        radial-gradient(circle at 0 0, rgba(236, 72, 153, 0.16), transparent 55%),
+        rgba(15, 23, 42, 0.96);
+      clip-path: polygon(
+        8px 0,
+        100% 0,
+        100% calc(100% - 8px),
+        calc(100% - 8px) 100%,
+        0 100%,
+        0 8px
+      );
+      box-shadow:
+        0 0 0 1px rgba(15, 23, 42, 0.85),
+        0 10px 26px rgba(0, 0, 0, 0.85),
+        inset 0 0 0 1px rgba(148, 163, 184, 0.05);
+    }
+
+    .pcm-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        120deg,
+        rgba(236, 72, 153, 0.35),
+        rgba(56, 189, 248, 0.35)
+      );
+      opacity: 0;
+      mix-blend-mode: color-dodge;
+      transition: opacity 180ms ease-out;
+      pointer-events: none;
+    }
+
+    .pcm-card:hover::before {
+      opacity: 0.2;
+    }
+
+    /* Rectangular cyber buttons with tiny corner cuts */
+    .pcm-button {
+      position: relative;
+      border-radius: 0;
+      clip-path: polygon(
+        6px 0,
+        100% 0,
+        100% calc(100% - 6px),
+        calc(100% - 6px) 100%,
+        0 100%,
+        0 6px
+      );
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .pcm-button-primary {
+      background: linear-gradient(
+        135deg,
+        #ec4899,
+        #22d3ee
+      );
+      color: #020617;
+      border: 1px solid rgba(248, 250, 252, 0.65);
+      box-shadow:
+        0 0 0 1px rgba(15, 23, 42, 0.95),
+        0 9px 22px rgba(236, 72, 153, 0.45);
+    }
+
+    .pcm-button-primary:hover {
+      filter: brightness(1.05);
+      box-shadow:
+        0 0 0 1px rgba(15, 23, 42, 0.95),
+        0 12px 30px rgba(56, 189, 248, 0.5);
+    }
+
+    .pcm-button-ghost {
+      border: 1px solid #4b5563;
+      background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.2), transparent 50%);
+      color: #e5e7eb;
+      box-shadow:
+        0 0 0 1px rgba(15, 23, 42, 0.95),
+        0 6px 18px rgba(0, 0, 0, 0.8);
+    }
+
+    .pcm-button-ghost:hover {
+      border-color: #e5e7eb;
+      color: #f9fafb;
+    }
+
+    /* Iframe container relief */
+    .pcm-frame-shell {
+      border-radius: 0;
+      clip-path: polygon(
+        10px 0,
+        100% 0,
+        100% calc(100% - 10px),
+        calc(100% - 10px) 100%,
+        0 100%,
+        0 10px
+      );
+      border-width: 1px;
+      border-style: solid;
+      border-color: #0f172a #020617 #020617 #0f172a;
+      background:
+        radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.14), transparent 55%),
+        rgba(2, 6, 23, 0.95);
+      box-shadow:
+        inset 0 0 0 1px rgba(148, 163, 184, 0.04),
+        0 12px 30px rgba(0, 0, 0, 0.9);
+    }
+
+    #bridge-frame.empty {
+      display: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100">
+  <!-- Cyberpunk background -->
+  <div class="fixed inset-0 -z-10 pointer-events-none overflow-hidden cyber-bg">
+    <div class="absolute -top-24 -left-32 w-72 h-72 bg-pink-500/30 blur-3xl"></div>
+    <div class="absolute -bottom-32 -right-40 w-80 h-80 bg-cyan-400/25 blur-3xl"></div>
+    <div class="absolute inset-y-0 left-1/2 w-px bg-gradient-to-b from-transparent via-pink-500/30 to-transparent opacity-40"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 py-6 md:py-10">
+    <!-- Header -->
+    <header class="mb-8 md:mb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div class="flex items-center gap-4">
+        <div class="w-14 h-14 bg-slate-900/95 border border-cyan-300/40 shadow-xl shadow-black/70 flex items-center justify-center overflow-hidden pcm-panel">
+          <img src="logo.png" alt="PussyChain Meowl Logo" class="w-full h-full object-cover" />
+        </div>
+        <div>
+          <h1 class="text-2xl md:text-3xl font-bold tracking-[0.18em] uppercase">
+            PussyChain Meowl
+          </h1>
+          <p class="text-xs md:text-sm text-slate-300 mt-1">
+            PulseChain bridge hub in a single, simple and effective interface.
+          </p>
+        </div>
+      </div>
+
+      <div class="flex flex-col items-stretch md:items-end gap-3">
+        <!-- New buttons row -->
+        <div class="flex flex-wrap gap-2 justify-start md:justify-end">
+          <!-- TODO: replace # with real buy link -->
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="pcm-button pcm-button-primary inline-flex items-center justify-center text-[10px] md:text-xs font-medium px-4 py-2"
+          >
+            Buy $MEOWL
+          </a>
+
+          <!-- TODO: replace # with real Twitter link -->
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="pcm-button pcm-button-ghost inline-flex items-center justify-center text-[10px] md:text-xs font-medium px-4 py-2"
+          >
+            Twitter
+          </a>
+        </div>
+
+        <div class="text-[11px] md:text-xs text-slate-400 max-w-md pcm-panel px-4 py-3 md:px-4 md:py-3 bg-slate-900/80 border border-slate-700">
+          PussyChain Meowl does not custody your funds.  
+          You always connect your own wallet directly to each official bridge dapp.  
+          Double check URLs and contracts before confirming any transaction.
+        </div>
+      </div>
+    </header>
+
+    <!-- Main layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,_2.1fr)_minmax(0,_3fr)] gap-6 lg:gap-8">
+      <!-- Left column: filters and list -->
+      <section class="space-y-4">
+        <!-- Filters -->
+        <div class="pcm-panel bg-slate-950/85 border border-slate-700 px-4 py-4 md:px-5 md:py-5 shadow-xl shadow-black/50">
+          <h2 class="text-base md:text-lg font-semibold tracking-[0.16em] uppercase mb-3">
+            Filters
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <!-- From -->
+            <div class="flex flex-col gap-1">
+              <label class="text-[10px] font-medium text-slate-400 uppercase tracking-[0.16em]">
+                Source chain
+              </label>
+              <select id="filter-from" class="bg-slate-950/80 border border-slate-700 text-xs rounded-none px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500/70 focus:border-pink-500">
+                <option value="any">Any</option>
+                <option>Ethereum</option>
+                <option>BNB Chain</option>
+                <option>Base</option>
+                <option>Polygon</option>
+                <option>Arbitrum</option>
+                <option>Solana</option>
+                <option>Others</option>
+              </select>
+            </div>
+            <!-- To -->
+            <div class="flex flex-col gap-1">
+              <label class="text-[10px] font-medium text-slate-400 uppercase tracking-[0.16em]">
+                Destination chain
+              </label>
+              <select id="filter-to" class="bg-slate-950/80 border border-slate-700 text-xs rounded-none px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500/70 focus:border-pink-500">
+                <option value="PulseChain">PulseChain</option>
+                <option value="any">Any</option>
+                <option>Ethereum</option>
+                <option>BNB Chain</option>
+              </select>
+            </div>
+            <!-- Type -->
+            <div class="flex flex-col gap-1">
+              <label class="text-[10px] font-medium text-slate-400 uppercase tracking-[0.16em]">
+                Bridge type
+              </label>
+              <select id="filter-type" class="bg-slate-950/80 border border-slate-700 text-xs rounded-none px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500/70 focus:border-pink-500">
+                <option value="any">All</option>
+                <option value="oficial">Official</option>
+                <option value="aggregator">Aggregator</option>
+                <option value="direct">Direct bridge</option>
+                <option value="onramp">On/off ramp</option>
+              </select>
+            </div>
+          </div>
+          <!-- Search -->
+          <div class="mt-4">
+            <label class="text-[10px] font-medium text-slate-400 uppercase tracking-[0.16em]">
+              Search by name or description
+            </label>
+            <div class="mt-1 relative">
+              <input
+                id="filter-search"
+                type="text"
+                placeholder="Example: TokensExpress, Liberty Swap, Rubic..."
+                class="w-full bg-slate-950/80 border border-slate-700 text-xs rounded-none px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-pink-500/70 focus:border-pink-500"
+              />
+              <span class="pointer-events-none absolute right-3 top-2.5 text-slate-500 text-[11px]">⌕</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bridges list -->
+        <div
+          id="bridge-list"
+          class="space-y-3 max-h-[65vh] lg:max-h-[70vh] overflow-y-auto pr-1"
+        >
+          <!-- Cards created via JS -->
+        </div>
+
+        <p class="text-[10px] text-slate-500 mt-2">
+          Tip: if a bridge blocks iframes, use the open in new tab button.
+        </p>
+      </section>
+
+      <!-- Right column: active bridge area -->
+      <section class="pcm-panel bg-slate-950/85 border border-slate-700 p-4 md:p-5 flex flex-col min-h-[360px] lg:min-h-[540px] shadow-xl shadow-black/60">
+        <div class="flex items-center justify-between gap-3 mb-3">
+          <div>
+            <h2 class="text-base md:text-lg font-semibold tracking-[0.16em] uppercase">
+              Selected bridge
+            </h2>
+            <p id="active-bridge-label" class="text-[11px] text-slate-400 mt-1">
+              No bridge selected. Click a card on the left to load it here.
+            </p>
+          </div>
+          <button
+            id="open-new-tab-button"
+            class="hidden text-[10px] px-3 py-1.5 pcm-button pcm-button-ghost transition"
+          >
+            Open in new tab
+          </button>
+        </div>
+
+        <div class="relative flex-1 pcm-frame-shell">
+          <iframe
+            id="bridge-frame"
+            class="w-full h-full empty"
+            src="about:blank"
+            referrerpolicy="no-referrer-when-downgrade"
+            sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
+          ></iframe>
+
+          <div
+            id="bridge-placeholder"
+            class="absolute inset-0 flex flex-col items-center justify-center text-center px-6 text-slate-300 text-xs"
+          >
+            <div class="text-4xl mb-2">😺</div>
+            <p>Select a bridge on the left list to load the dapp inside PussyChain Meowl.</p>
+            <p class="mt-2 text-[10px] text-slate-500">
+              If the dapp does not allow iframe embedding, use the open in new tab button.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-8 text-[10px] text-slate-500 flex flex-col md:flex-row md:items-center md:justify-between gap-2 pb-4">
+      <span>PussyChain Meowl · Non custodial PulseChain bridge hub.</span>
+      <span>Fork, extend and self host. You are in control.</span>
+    </footer>
+  </div>
+
+  <script>
+    // Main bridge list (PulseRamp and PortalX removed)
+    const bridges = [
+      {
+        id: "tokensexpress",
+        name: "TokensExpress",
+        url: "https://tokensex.link/",
+        description:
+          "Decentralized bridge into PulseChain with focus on Ethereum and BNB Chain.",
+        types: ["direct"],
+        fromChains: ["Ethereum", "BNB Chain"],
+        toChains: ["PulseChain"],
+        notes: "Good entry route if you are on Ethereum or BNB Chain."
+      },
+      {
+        id: "libertyswap",
+        name: "Liberty Swap",
+        url: "https://libertyswap.finance/",
+        description:
+          "Cross chain exchange focused on PulseChain. Often used to onboard from Base, Arbitrum and other chains to PulseChain.",
+        types: ["aggregator"],
+        fromChains: ["Ethereum", "Base", "Arbitrum", "BNB Chain", "Others"],
+        toChains: ["PulseChain"],
+        notes: "Focused on entering PulseChain from other EVM chains."
+      },
+      {
+        id: "rubic",
+        name: "Rubic Exchange",
+        url: "https://rubic.exchange/bridge/pulsechain",
+        description:
+          "Cross chain aggregator that includes PulseChain in its bridge and swap routes.",
+        types: ["aggregator"],
+        fromChains: ["Ethereum", "BNB Chain", "Polygon", "Base", "Arbitrum", "Others"],
+        toChains: ["PulseChain", "Others"],
+        notes: "Useful for more exotic paths."
+      },
+      {
+        id: "nineinch",
+        name: "9inch Bridge",
+        url: "https://bridge.9inch.io/",
+        description:
+          "Decentralized bridge integrated with the 9inch and PulseX ecosystem.",
+        types: ["direct"],
+        fromChains: ["Ethereum"],
+        toChains: ["PulseChain"],
+        notes: "Oriented to the PulseChain DeFi ecosystem."
+      },
+      {
+        id: "swaptopulse",
+        name: "SwapToPulse",
+        url: "https://swaptopulse.com/",
+        description:
+          "Utility often used to exit PulseChain into other networks, converting PLS into assets on other chains.",
+        types: ["direct"],
+        fromChains: ["PulseChain"],
+        toChains: ["Ethereum", "BNB Chain", "Solana", "Others"],
+        notes: "Good for offboarding, profit taking and rebalancing outside PulseChain."
+      },
+      {
+        id: "changenow",
+        name: "ChangeNOW (Multichain Bridge)",
+        url: "https://changenow.io/multichain-bridge",
+        description:
+          "Generic multichain bridge and swap service that can be combined with other routes for PulseChain.",
+        types: ["aggregator"],
+        fromChains: ["Ethereum", "BNB Chain", "Others"],
+        toChains: ["Others"],
+        notes: "Useful as a complement for indirect routes involving PulseChain."
+      }
+    ];
+
+    const listEl = document.getElementById("bridge-list");
+    const fromEl = document.getElementById("filter-from");
+    const toEl = document.getElementById("filter-to");
+    const typeEl = document.getElementById("filter-type");
+    const searchEl = document.getElementById("filter-search");
+    const iframeEl = document.getElementById("bridge-frame");
+    const placeholderEl = document.getElementById("bridge-placeholder");
+    const activeLabelEl = document.getElementById("active-bridge-label");
+    const openNewTabBtn = document.getElementById("open-new-tab-button");
+
+    let activeBridge = null;
+
+    function matchesFilters(bridge) {
+      const from = fromEl.value;
+      const to = toEl.value;
+      const type = typeEl.value;
+      const q = searchEl.value.trim().toLowerCase();
+
+      if (from !== "any" && !bridge.fromChains.includes(from)) {
+        return false;
+      }
+      if (to !== "any" && !bridge.toChains.includes(to)) {
+        return false;
+      }
+      if (type !== "any" && !bridge.types.includes(type)) {
+        return false;
+      }
+
+      if (q) {
+        const text = (
+          bridge.name +
+          " " +
+          bridge.description +
+          " " +
+          (bridge.notes || "")
+        ).toLowerCase();
+        if (!text.includes(q)) return false;
+      }
+
+      return true;
+    }
+
+    function renderList() {
+      listEl.innerHTML = "";
+
+      const filtered = bridges.filter(matchesFilters);
+
+      if (!filtered.length) {
+        const empty = document.createElement("div");
+        empty.className =
+          "text-[11px] text-slate-400 bg-slate-900/80 border border-dashed border-slate-700 px-4 py-3";
+        empty.textContent =
+          "No bridge found for this filter. Adjust filters or search.";
+        listEl.appendChild(empty);
+        return;
+      }
+
+      filtered.forEach((bridge) => {
+        const card = document.createElement("article");
+        card.className =
+          "pcm-card px-4 py-3 md:px-4 md:py-4 text-xs md:text-sm cursor-pointer transition-transform duration-150 hover:-translate-y-[1px]";
+
+        const isActive = activeBridge && activeBridge.id === bridge.id;
+        if (isActive) {
+          card.classList.add("ring-1", "ring-pink-500/70");
+        }
+
+        card.innerHTML = `
+          <div class="flex items-start gap-3">
+            <div class="mt-1 text-lg select-none">
+              😺
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center justify-between gap-2 flex-wrap">
+                <h3 class="font-semibold tracking-[0.14em] uppercase text-[11px] md:text-xs">
+                  ${bridge.name}
+                </h3>
+                <div class="flex flex-wrap gap-1.5 text-[9px] uppercase">
+                  ${bridge.types
+                    .map((t) => {
+                      let label = t;
+                      if (t === "oficial") label = "official";
+                      if (t === "aggregator") label = "aggregator";
+                      if (t === "direct") label = "direct bridge";
+                      if (t === "onramp") label = "on/off ramp";
+                      return `<span class="px-2 py-0.5 bg-slate-900/90 border border-slate-600 text-slate-200">${label}</span>`;
+                    })
+                    .join("")}
+                </div>
+              </div>
+              <p class="mt-1 text-slate-200 text-[11px] md:text-xs leading-relaxed">
+                ${bridge.description}
+              </p>
+
+              <div class="mt-2 flex flex-wrap gap-2 text-[10px] text-slate-400">
+                <span class="px-2 py-0.5 border border-slate-700 bg-slate-950/70">
+                  From: ${bridge.fromChains.join(", ")}
+                </span>
+                <span class="px-2 py-0.5 border border-slate-700 bg-slate-950/70">
+                  To: ${bridge.toChains.join(", ")}
+                </span>
+              </div>
+
+              ${
+                bridge.notes
+                  ? `<p class="mt-1 text-[10px] text-slate-400">${bridge.notes}</p>`
+                  : ""
+              }
+
+              <div class="mt-3 flex flex-wrap gap-2">
+                <button
+                  data-action="load"
+                  data-id="${bridge.id}"
+                  class="pcm-button pcm-button-primary inline-flex items-center justify-center text-[10px] font-medium px-3 py-1.5"
+                >
+                  Load in PussyChain Meowl
+                </button>
+                <a
+                  href="${bridge.url}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="pcm-button pcm-button-ghost inline-flex items-center justify-center text-[10px] font-medium px-3 py-1.5"
+                >
+                  Open in new tab
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
+
+        card.addEventListener("click", (e) => {
+          const dataset = e.target && e.target.dataset ? e.target.dataset : {};
+          if (dataset.action === "load") {
+            setActiveBridge(bridge);
+          } else if (
+            e.target.tagName.toLowerCase() === "a" &&
+            e.target.getAttribute("target") === "_blank"
+          ) {
+            return;
+          } else if (!dataset.action) {
+            setActiveBridge(bridge);
+          }
+        });
+
+        listEl.appendChild(card);
+      });
+    }
+
+    function setActiveBridge(bridge) {
+      activeBridge = bridge;
+
+      iframeEl.classList.remove("empty");
+      iframeEl.src = bridge.url;
+
+      placeholderEl.classList.add("hidden");
+
+      activeLabelEl.textContent =
+        "Loading: " + bridge.name + " (" + bridge.url + ")";
+
+      openNewTabBtn.classList.remove("hidden");
+      openNewTabBtn.onclick = () => {
+        window.open(bridge.url, "_blank", "noopener");
+      };
+
+      renderList();
+    }
+
+    [fromEl, toEl, typeEl].forEach((el) => {
+      el.addEventListener("change", renderList);
+    });
+
+    searchEl.addEventListener("input", () => {
+      renderList();
+    });
+
+    renderList();
+  </script>
+</body>
+</html>
+
